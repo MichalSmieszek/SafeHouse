@@ -1,11 +1,15 @@
-package project;
+package project.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import project.Model.Sensor;
+import project.Repository.SensorRepository;
+import project.Model.SensorType;
+import project.Repository.SensorTypeRepository;
+
 import javax.mail.*;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
@@ -58,7 +62,7 @@ public class SensorController {
             if (newSensor.getAcceptedValueMax()<sensor.getAcceptedValueMin()) {
                 sensor.setAcceptedValueMax(newSensor.getAcceptedValueMax());
                 sensorRepository.save(sensor);
-                sendEmail();
+             //   sendEmail();
             }
             else
                 return("Max Value to low.");
@@ -93,16 +97,16 @@ public class SensorController {
         final String username = "andrzej.kokosza13";
         final String password = "asd1fgh2jkl3";
         final String fromEmail= "andrzej.kokosza13@gmail.com";
-        final String toEmail = "micsmi@st.amu.edu.pl";
-        final String subject = "Dzień dobry";
-        final String text = "Życzę Panu udanej pracy!";
+        final String toEmail = "";
+        final String subject = "Spam";
+        final String text = "";
         Session session = Session.getDefaultInstance(prop, new Authenticator(){
             @Override
             protected PasswordAuthentication getPasswordAuthentication(){
                 return new PasswordAuthentication(username,password);
             }
         });
-        for(int i=1; i<=4;i++) {
+        for(int i=1; i<=10;i++) {
             try {
                 Message message = new MimeMessage(session);
                 message.setFrom(new InternetAddress(fromEmail));

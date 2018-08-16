@@ -1,8 +1,11 @@
-package project;
+package project.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import project.Model.User;
+import project.Repository.UserRepository;
 
 @Controller
 @RequestMapping(path="/user")

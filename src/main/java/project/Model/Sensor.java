@@ -1,13 +1,13 @@
-package project;
+package project.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name="Sensor")
 public class Sensor {
+    public Sensor(){}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
