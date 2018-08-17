@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import project.Model.Measurement;
 import project.Model.Sensor;
+import project.Model.User;
+import project.Repository.MeasurementRepository;
 import project.Repository.SensorRepository;
 import project.Model.SensorType;
 import project.Repository.SensorTypeRepository;
@@ -13,6 +16,7 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
+import java.util.Set;
 
 @Controller
 @RequestMapping(path = "/sensor")
@@ -21,15 +25,15 @@ public class SensorController {
     SensorTypeRepository sensorTypeRepository;
     @Autowired
     SensorRepository sensorRepository;
+    @Autowired
+    MeasurementRepository measurementRepository;
     @CrossOrigin
     @ResponseBody
     @GetMapping (path = "/add")
-    public String addSensor(@RequestParam double value,
-                            @RequestParam double minValue,
-                            @RequestParam double maxValue,
-                            @RequestParam SensorType sensorType){
+    public String addSensorValue(@RequestParam double minValue,
+                                 @RequestParam double maxValue,
+                                 @RequestParam SensorType sensorType){
         Sensor sensor = new Sensor();
-        sensor.setValue(value);
         sensor.setAcceptedValueMin(minValue);
         sensor.setAcceptedValueMax(maxValue);
         sensor.setType(sensorType);
@@ -62,7 +66,7 @@ public class SensorController {
             if (newSensor.getAcceptedValueMax()<sensor.getAcceptedValueMin()) {
                 sensor.setAcceptedValueMax(newSensor.getAcceptedValueMax());
                 sensorRepository.save(sensor);
-             //   sendEmail();
+              //  sendEmail();
             }
             else
                 return("Max Value to low.");
@@ -80,12 +84,19 @@ public class SensorController {
             Sensor sensor = sensorRepository.findById(newSensor.getId());
             sensor.setValue(newSensor.getValue());
             sensorRepository.save(sensor);
+            Measurement measurement = new Measurement();
+            measurement.setValue(newSensor.getValue());
+            measurement.setSensor(newSensor);
+            measurementRepository.save(measurement);
+
         } catch (Exception e) {
             e.printStackTrace();
             return("Data hasn't been changed.");
         }
         return("Temperature changed.");
     }
+
+
     public String sendEmail(){
         Properties prop =new Properties();
         prop.put("mail.smtp.auth","true");
@@ -94,19 +105,18 @@ public class SensorController {
         prop.put("mail.smtp.port","587");
         prop.put("mail.smtp.ssl.trust", "*");
 
-        final String username = "andrzej.kokosza13";
+        final String username = "";
         final String password = "asd1fgh2jkl3";
-        final String fromEmail= "andrzej.kokosza13@gmail.com";
+        final String fromEmail= "";
         final String toEmail = "";
-        final String subject = "Spam";
-        final String text = "";
+        final String subject = "Spoważniej";
+        final String text = "Spoważniej";
         Session session = Session.getDefaultInstance(prop, new Authenticator(){
             @Override
             protected PasswordAuthentication getPasswordAuthentication(){
                 return new PasswordAuthentication(username,password);
             }
         });
-        for(int i=1; i<=10;i++) {
             try {
                 Message message = new MimeMessage(session);
                 message.setFrom(new InternetAddress(fromEmail));
@@ -117,7 +127,7 @@ public class SensorController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+
         return("Dziala");
     }
 

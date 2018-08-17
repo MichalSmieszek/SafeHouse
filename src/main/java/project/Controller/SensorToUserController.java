@@ -76,5 +76,19 @@ public class SensorToUserController {
         }
         return (sensorToUserSet);
     }
-
+    @CrossOrigin
+    @ResponseBody
+    @GetMapping(value = "/showUserSensors")
+    public Set<Sensor> findUserSensor(@RequestParam User user){
+        Set <SensorToUser> sensorToUserSet=new HashSet<>();
+        Set <Sensor> sensorSet=new HashSet<>();
+        try{
+            sensorToUserSet=sensorToUserRepository.findAllByUser(userRepository.findById(user.getId()));
+            for (SensorToUser sensorToUser:sensorToUserSet)
+                sensorSet.add(sensorToUser.getSensor());
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return(sensorSet);
+    }
 }
