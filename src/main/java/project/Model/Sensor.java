@@ -15,6 +15,8 @@ public class Sensor {
     private double value;
     private double acceptedValueMin;
     private double acceptedValueMax;
+    private String name;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "SensorTypeId")
@@ -54,4 +56,13 @@ public class Sensor {
     public void setType(SensorType type) {
         this.sensorType = type;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }

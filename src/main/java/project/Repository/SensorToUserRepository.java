@@ -10,4 +10,5 @@ public interface SensorToUserRepository extends CrudRepository<SensorToUser,Inte
     Set<SensorToUser> findAllBySensorAndUser(Sensor sensor, User user);
     SensorToUser findById(int id);
     Set<SensorToUser> findAllByUser(User user);
+    Set<SensorToUser> findAllBySensor(Sensor sensor);
 }
