@@ -104,8 +104,20 @@ public class SensorController {
         }
         return("Temperature changed.");
     }
+    @CrossOrigin
+    @ResponseBody
+    @GetMapping(value = "/get")
+    public Sensor showSensor(@RequestParam Sensor sensor){
+        return(sensorRepository.findById(sensor.getId()));
 
+    }
+    @CrossOrigin
+    @ResponseBody
+    @GetMapping(value = "/getAll")
+    public Set <Sensor> showSensors(){
+        return(sensorRepository.findAll());
 
+    }
     public String sendEmail(User user, Sensor sensor) {
         Properties prop = new Properties();
         prop.put("mail.smtp.auth", "true");
