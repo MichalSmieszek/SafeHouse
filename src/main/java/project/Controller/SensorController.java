@@ -33,11 +33,13 @@ public class SensorController {
     @GetMapping (path = "/add")
     public String addSensorValue(@RequestParam double minValue,
                                  @RequestParam double maxValue,
-                                 @RequestParam SensorType sensorType){
+                                 @RequestParam SensorType sensorType,
+                                 @RequestParam String nazwa){
         Sensor sensor = new Sensor();
         sensor.setAcceptedValueMin(minValue);
         sensor.setAcceptedValueMax(maxValue);
         sensor.setType(sensorType);
+        sensor.setName(nazwa);
         sensorRepository.save(sensor);
         return ("Data saved");
     }

@@ -54,7 +54,7 @@ public class SensorToUserController {
     @CrossOrigin
     @ResponseBody
     @DeleteMapping(path="/delete")
-    public String deleteSensorFromUser(SensorToUser sensorToUser){
+    public String deleteSensorFromUser(@RequestParam SensorToUser sensorToUser){
         try {
             SensorToUser element=sensorToUserRepository.findById(sensorToUser.getId());
             sensorToUserRepository.delete(element);

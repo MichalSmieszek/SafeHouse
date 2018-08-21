@@ -17,11 +17,13 @@ public class UserController {
     @GetMapping(path="/add")
     @ResponseBody
     public String addUser (@RequestParam String name,
+                           @RequestParam String password,
                            @RequestParam String email,
                            @RequestParam char sex){
         if (sex=='f' || sex=='m') {
             User user = new User();
             user.setEmail(email);
+            user.setPassword(password);
             user.setName(name);
             user.setSex(sex);
             userRepository.save(user);
@@ -66,9 +68,9 @@ public class UserController {
 
     @CrossOrigin
     @ResponseBody
-    @DeleteMapping(value = "/delete/{id}")
-    public String deleteUser(@PathVariable int id){
-        User user = userRepository.findById(id);
+    @DeleteMapping(value = "/delete")
+    public String deleteUser(@RequestParam User oldUser){
+        User user = userRepository.findById(oldUser.getId());
         userRepository.delete(user);
         return("User deleted");
     }
