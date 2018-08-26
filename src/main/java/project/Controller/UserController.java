@@ -1,18 +1,22 @@
 package project.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import project.Model.User;
 import project.Repository.UserRepository;
 
+import java.util.List;
+
 @Controller
 @RequestMapping(path="/user")
 public class UserController {
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @CrossOrigin
     @GetMapping(path="/add")
     @ResponseBody
@@ -21,11 +25,13 @@ public class UserController {
                            @RequestParam String email,
                            @RequestParam char sex){
         if (sex=='f' || sex=='m') {
+            System.out.println("aaa");
             User user = new User();
             user.setEmail(email);
-            user.setPassword(password);
+            user.setPassword(passwordEncoder.encode(password));
             user.setName(name);
             user.setSex(sex);
+            user.setRole("User");
             userRepository.save(user);
             return (name);
         }
@@ -73,6 +79,13 @@ public class UserController {
         User user = userRepository.findById(oldUser.getId());
         userRepository.delete(user);
         return("User deleted");
+    }
+
+    @CrossOrigin
+    @ResponseBody
+    @GetMapping(value = "/all")
+    public Iterable<User> showAllUser(){
+       return (userRepository.findAll());
     }
 
 

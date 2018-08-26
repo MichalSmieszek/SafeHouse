@@ -7,10 +7,20 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(unique = true)
     private String name;
     private String email;
     private char sex;
     private String password;
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public char getSex() {
         return sex;
