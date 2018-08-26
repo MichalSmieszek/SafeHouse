@@ -23,19 +23,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     //https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/user/all").authenticated()
                 .antMatchers("/user/add").permitAll()
-                .antMatchers("/measurement/all").authenticated()
-                .antMatchers("/sensor/all").authenticated()
-                .antMatchers("/sensorToUser/all").authenticated()
+                .antMatchers("/user/*").authenticated()
+                .antMatchers("/measurement/*").authenticated()
+                .antMatchers("/sensor/*").authenticated()
+                .antMatchers("/sensorToUser/*").authenticated()
                 .and().httpBasic();
         //.authenticationEntryPoint(authEntryPoint);
     }
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {//hardcored authorization credentials
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authProvider);
-//        auth.inMemoryAuthentication().withUser("admin").password("admin1").roles("ADMIN");//Pobierac z bazy danych zamiast z kodu :D
     }
 
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import project.Model.User;
 import project.Repository.UserRepository;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -84,8 +85,22 @@ public class UserController {
     @CrossOrigin
     @ResponseBody
     @GetMapping(value = "/all")
-    public Iterable<User> showAllUser(){
-       return (userRepository.findAll());
+    public List<User> showAllUser(){
+        Iterable <User> users= userRepository.findAll();
+        List <User> newValuesUsers = new LinkedList<>();
+        User newUser =new User();
+        for (User user : users){
+            String email=user.getEmail();
+            String name=user.getName();
+            char sex=user.getSex();
+            String role = user.getRole();
+            newUser.setName(name);
+            newUser.setEmail(email);
+            newUser.setSex(sex);
+            newUser.setRole(role);
+            newValuesUsers.add(newUser);
+        }
+       return (newValuesUsers);
     }
 
 
