@@ -31,15 +31,19 @@ public class SensorController {
     @CrossOrigin
     @ResponseBody
     @GetMapping (path = "/add")
-    public String addSensorValue(@RequestParam double minValue,
+    public String addSensor     (@RequestParam double minValue,
                                  @RequestParam double maxValue,
                                  @RequestParam SensorType sensorType,
-                                 @RequestParam String nazwa){
+                                 @RequestParam String nazwa,
+                                 @RequestParam int posX,
+                                 @RequestParam int posY){
         Sensor sensor = new Sensor();
         sensor.setAcceptedValueMin(minValue);
         sensor.setAcceptedValueMax(maxValue);
         sensor.setType(sensorType);
         sensor.setName(nazwa);
+        sensor.setPosX(posX);
+        sensor.setPosY(posY);
         sensorRepository.save(sensor);
         return ("Data saved");
     }
@@ -104,8 +108,20 @@ public class SensorController {
             e.printStackTrace();
             return("Data hasn't been changed.");
         }
-        return("Temperature changed.");
+        return("Value changed.");
     }
+
+    @CrossOrigin
+    @ResponseBody
+    @PostMapping(value = "/changePosition")
+    public String changePosition(@RequestBody Sensor sensor){
+        Sensor newSensor = sensorRepository.findById(sensor.getId());
+        newSensor.setPosY(sensor.getPosY());
+        newSensor.setPosX(sensor.getPosX());
+        sensorRepository.save(newSensor);
+        return("Position has been changed");
+    }
+
     @CrossOrigin
     @ResponseBody
     @GetMapping(value = "/get")
@@ -157,7 +173,7 @@ public class SensorController {
             }
 
 
-        return("Dziala");
+        return("Mail has been sent.");
     }
 
 }
